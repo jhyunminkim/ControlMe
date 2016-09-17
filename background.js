@@ -6,3 +6,10 @@ chrome.webRequest.onBeforeRequest.addListener(
 	},
 	["blocking"]
 );
+
+function TurnOn(){
+   var myButton = document.getElementByID("Button1");
+   document.removeChild(myButton);
+
+}
+
