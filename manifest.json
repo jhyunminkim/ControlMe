@@ -1,0 +1,23 @@
+{
+	"manifest_version": 2,
+
+	"name": "Control Me",
+	"description": "Browser limiter",
+	"version": "1.0",
+
+	"permissions": [
+		"webRequest",
+		"webRequestBlocking"
+	],
+
+	"browser_action": {
+		"default_popup": "popup.html",
+		"default_icon": "ControlMeIcon.png"
+	},
+
+	"background": {
+		"scripts": ["background.js"]
+	}
+
+
+}
