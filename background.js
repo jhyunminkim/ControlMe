@@ -1,13 +1,9 @@
 var block = false;
 var beginTime = 0;
-var waitTime = 30000;
+var waitTime = 120000;
 
 var blockSites = function(details) { 
-        if (block == true) {
-		return {cancel: true};
-	} else {
-		return {cancel: false};
-	}
+	return {cancel: true};
 }
 function startListener(){
          chrome.webRequest.onBeforeRequest.addListener(
@@ -19,7 +15,7 @@ function startListener(){
 		["blocking"]
 	);
 	
-	setTimeout(removeListener, 30000);
+	setTimeout(removeListener, waitTime);
 }
 
 

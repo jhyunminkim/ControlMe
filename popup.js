@@ -1,34 +1,81 @@
 window.addEventListener("load", TurnOn);
+
+var backgroundPage = chrome.extension.getBackgroundPage();
+var interval;
                                                                                            
 function TurnOn(){
-   var backgroundPage = chrome.extension.getBackgroundPage();
    if(!backgroundPage.block){
+   	createButton();
+   } else{
+	createTimeElement();
+   }
+}
+
+function handleClick() {
+    backgroundPage.block = true;
+    backgroundPage.beginTime = new Date().getTime();
+    backgroundPage.startListener();
+    createTimeElement();
+}
+
+function getTimeLeft(){
+	var beginTime = backgroundPage.beginTime;
+	var waitTime = backgroundPage.waitTime;
+	var currentTime = new Date().getTime();
+	var timePassed = currentTime - beginTime;
+	return (waitTime - timePassed);
+}
+
+
+function updateTime() {
+	var timeLeft = getTimeLeft();
+	var minutes = Math.ceil(timeLeft / 60000);
+	var seconds = ((timeLeft % 60000) / 1000).toFixed(0);
+	var timeValue = document.getElementById("timeValue");
+	var timeText = document.getElementById("timeText");
+	if (minutes > 1) {
+		timeValue.innerHTML = minutes;
+		timeText.innerHTML = "minutes";
+	} else {
+		timeValue.innerHTML = seconds;
+		timeText.innerHTML = "seconds";
+	}
+	if (timeLeft < 1000) {
+		clearInterval(interval);
+		createButton();
+	}
+}
+
+function createButton() {
+	var timeElement = document.getElementById("timeElement");
+	if (timeElement) {
+		document.body.removeChild(timeElement);
+	}
+	
 	var myButton = document.createElement("BUTTON");
 	myButton.innerHTML = "Turn On";
 	myButton.setAttribute("id", "id1");
 	document.body.appendChild(myButton);
 	myButton.addEventListener("click", handleClick);
-   } else{
-	var timeLeft = getTimeLeft(backgroundPage.beginTime, backgroundPage.waitTime);
-	var timeElement = document.createElement("Div");
-	timeElement.innerHTML = timeLeft;
-	document.body.appendChild(timeElement);   
-   }
 }
 
-function handleClick() {
-  	var myButton = document.getElementById("id1");
-	document.body.removeChild(myButton);
-	chrome.runtime.getBackgroundPage(function(bg) {
-	    bg.block = true;
-	    bg.beginTime = new Date().getTime();
-            bg.startListener();
-	});
+function createTimeElement() {
+	var myButton = document.getElementById("id1");
+	if (myButton) {
+		document.body.removeChild(myButton);
+	}
 
-}
+	var timeElement = document.createElement("DIV");
+	var timeValue = document.createElement("SPAN");	
+	var timeText = document.createElement("SPAN");
 
-function getTimeLeft(beginTime, waitTime){
-	var currentTime = new Date().getTime();
-	var timePassed = currentTime - beginTime;
-	return (waitTime - timePassed);
+	timeElement.setAttribute("id", "timeElement");
+	timeValue.setAttribute("id", "timeValue");
+	timeText.setAttribute("id", "timeText");
+
+	timeElement.appendChild(timeValue);
+	timeElement.appendChild(timeText);
+	document.body.appendChild(timeElement);
+
+	interval = setInterval(updateTime, 1000);
 }
