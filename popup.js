@@ -53,7 +53,7 @@ function createButton() {
 	}
 	
 	var myButton = document.createElement("BUTTON");
-	myButton.innerHTML = "Turn On";
+	myButton.innerHTML = "Block";
 	myButton.setAttribute("id", "id1");
 	document.body.appendChild(myButton);
 	myButton.addEventListener("click", handleClick);
@@ -66,8 +66,8 @@ function createTimeElement() {
 	}
 
 	var timeElement = document.createElement("DIV");
-	var timeValue = document.createElement("SPAN");	
-	var timeText = document.createElement("SPAN");
+	var timeValue = document.createElement("DIV");	
+	var timeText = document.createElement("DIV");
 
 	timeElement.setAttribute("id", "timeElement");
 	timeValue.setAttribute("id", "timeValue");
