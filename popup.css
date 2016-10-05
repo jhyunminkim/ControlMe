@@ -3,7 +3,7 @@ body {
    width: 125px;
 }
 
-#id1 {
+#blockButton {
    padding: 16px 32px;
    text-align: center;
    text-decoration: none;
@@ -20,7 +20,7 @@ body {
    border: 2px solid #555555;
 }
 
-#id1:hover {
+#blockButton:hover {
    background-color: #555555;
    color: white;
 }
@@ -42,4 +42,17 @@ body {
 	margin: 0 auto;
 	width:100%;
 	text-align: center;
+}
+
+#urlInputElement {
+}
+
+#urlInput {
+   width: 75%;
+   float: left;
+}
+
+#urlInputClick {
+   width: 25%;
+   float: left;
 }

@@ -1,21 +1,47 @@
-window.addEventListener("load", TurnOn);
+window.addEventListener("load", onStart);
 
+// Globals
 var backgroundPage = chrome.extension.getBackgroundPage();
-var interval;
-                                                                                           
-function TurnOn(){
-   if(!backgroundPage.block){
-   	createButton();
-   } else{
-	createTimeElement();
-   }
+var interval; // Need to keep track so can clear later
+                                    
+// Runs on load                                                     
+function onStart(){
+	var blockButton = document.getElementById("blockButton");
+	var urlInputClick = document.getElementById("urlInputClick");
+	var timeInputClick = document.getElementById("timeInputClick");
+	blockButton.addEventListener("click", handleBlockClick);
+   	urlInputClick.addEventListener("click", handleUrlInput);
+   	timeInputClick.addEventListener("click", handleTimeInput);
+
+   	if(!backgroundPage.block){
+  		showMainMenu();
+   	} else{
+		showTimeElement();
+   	}
 }
 
-function handleClick() {
+function handleBlockClick() {
+	if (backgroundPage.chosenUrls.length == 0 || backgroundPage.waitTime <= 0) {
+		return;
+	}
     backgroundPage.block = true;
     backgroundPage.beginTime = new Date().getTime();
     backgroundPage.startListener();
-    createTimeElement();
+    showTimeElement();
+}
+
+function handleUrlInput() {
+	var urlInput = document.getElementById("urlInput").value;
+	var urlInputForm = document.getElementById("urlInputForm");
+	backgroundPage.chosenUrls.push(urlInput);
+	urlInputForm.reset();
+}
+
+function handleTimeInput() {
+	var timeInput = document.getElementById("timeInput").value;
+	var timeInputForm = document.getElementById("timeInputForm");
+	var backgroundPage.waitTime = timeInput;
+	timeInputForm.reset();
 }
 
 function getTimeLeft(){
@@ -42,40 +68,22 @@ function updateTime() {
 	}
 	if (timeLeft < 1000) {
 		clearInterval(interval);
-		createButton();
+		showMainMenu();
 	}
 }
 
-function createButton() {
+function showMainMenu() {
+	var mainMenu = document.getElementById("mainMenu");
 	var timeElement = document.getElementById("timeElement");
-	if (timeElement) {
-		document.body.removeChild(timeElement);
-	}
-	
-	var myButton = document.createElement("BUTTON");
-	myButton.innerHTML = "Block";
-	myButton.setAttribute("id", "id1");
-	document.body.appendChild(myButton);
-	myButton.addEventListener("click", handleClick);
+	mainMenu.style.display = "block";
+	timeElement.style.display = "none";
 }
 
-function createTimeElement() {
-	var myButton = document.getElementById("id1");
-	if (myButton) {
-		document.body.removeChild(myButton);
-	}
-
-	var timeElement = document.createElement("DIV");
-	var timeValue = document.createElement("DIV");	
-	var timeText = document.createElement("DIV");
-
-	timeElement.setAttribute("id", "timeElement");
-	timeValue.setAttribute("id", "timeValue");
-	timeText.setAttribute("id", "timeText");
-
-	timeElement.appendChild(timeValue);
-	timeElement.appendChild(timeText);
-	document.body.appendChild(timeElement);
+function showTimeElement() {
+	var mainMenu = document.getElementById("mainMenu");
+	var timeElement = document.getElementById("timeElement");
+	mainMenu.style.display = "none";
+	timeElement.style.display = "block";
 
 	interval = setInterval(updateTime, 1000);
 }

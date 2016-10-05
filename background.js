@@ -1,20 +1,22 @@
 var block = false;
 var beginTime = 0;
-var waitTime = 120000;
+var waitTime = 30000;
+var chosenUrls = [];
 
 var blockSites = function(details) { 
 	return {cancel: true};
 }
 function startListener(){
-         chrome.webRequest.onBeforeRequest.addListener(
+	blockedUrls = []
+	for (var i = 0; i < chosenUrls.length; i++) {
+		var tempUrl = "*://*." + chosenUrls[i] + "/*";
+		blockedUrls.push(tempUrl);
+	}
+    chrome.webRequest.onBeforeRequest.addListener(
 		blockSites,
-		{urls: ["*://*.facebook.com/*",
-				"*://*.reddit.com/*"
-				]
-		},
+		{urls: blockedUrls},
 		["blocking"]
 	);
-	
 	setTimeout(removeListener, waitTime);
 }
 

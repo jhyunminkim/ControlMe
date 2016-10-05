@@ -5,6 +5,21 @@
 <link rel="stylesheet" type="text/css" href="popup.css">
 </head>
 <body>
-
+	<div id="mainMenu">
+		<button id="blockButton">BLOCK</button>
+		<form id="urlInputForm">
+			<input type="text" name="urlInput" id="urlInput">
+			<input type="button" value=">>" id="urlInputClick">
+		</form>
+		<form id="timeInputForm">
+			<input type="number" id="timeInput">
+			<input type="button" value="time" id="timeInputClick">
+		</form>
+	</div>
+	<div id="timeElement">
+		<div id="timeValue"></div>
+		<div id="timeText"></div>
+	</div>
+	<div id="currentBlockedSites"></div>
 </body>
 </html>
