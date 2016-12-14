@@ -7,14 +7,16 @@
 <body>
 	<div id="mainMenu">
 		<button id="blockButton">BLOCK</button>
-		<form id="urlInputForm">
-			<input type="text" name="urlInput" id="urlInput">
+		<div id="urlInputElement">
+			<input type="text" id="urlInput" autocomplete="off" placeholder="website.com">
 			<input type="button" value=">>" id="urlInputClick">
-		</form>
-		<form id="timeInputForm">
-			<input type="number" id="timeInput">
+		</div>
+		<div id="timeInputElement">
+			<input type="number" id="timeInput" autocomplete="off" placeholder="time in min">
 			<input type="button" value="time" id="timeInputClick">
-		</form>
+		</div>
+		<ul id="urlList">
+		</ul>
 	</div>
 	<div id="timeElement">
 		<div id="timeValue"></div>

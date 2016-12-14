@@ -44,15 +44,18 @@ body {
 	text-align: center;
 }
 
-#urlInputElement {
+#urlInputForm {
+
 }
 
 #urlInput {
-   width: 75%;
-   float: left;
+   width: 70%;;
 }
 
 #urlInputClick {
-   width: 25%;
-   float: left;
+   width: 20%;
+}
+
+#urlList {
+   list-style-type: none;
 }

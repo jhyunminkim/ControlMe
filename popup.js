@@ -9,15 +9,33 @@ function onStart(){
 	var blockButton = document.getElementById("blockButton");
 	var urlInputClick = document.getElementById("urlInputClick");
 	var timeInputClick = document.getElementById("timeInputClick");
+	var urlInput = document.getElementById("urlInput");
+	var timeInput = document.getElementById("timeInput");
+
+
+	// Click Listeners
 	blockButton.addEventListener("click", handleBlockClick);
    	urlInputClick.addEventListener("click", handleUrlInput);
    	timeInputClick.addEventListener("click", handleTimeInput);
+
+   	// Enter Listeners
+   	urlInput.addEventListener("keyup", function(event) {
+   		if (event.keyCode == 13) {
+   			handleUrlInput();
+   		}
+   	});
+   	timeInput.addEventListener("keyup", function(event) {
+   		if (event.keyCode == 13) {
+   			handleTimeInput();
+   		}
+   	});
 
    	if(!backgroundPage.block){
   		showMainMenu();
    	} else{
 		showTimeElement();
    	}
+   	updateUrlList();
 }
 
 function handleBlockClick() {
@@ -30,18 +48,32 @@ function handleBlockClick() {
     showTimeElement();
 }
 
-function handleUrlInput() {
-	var urlInput = document.getElementById("urlInput").value;
-	var urlInputForm = document.getElementById("urlInputForm");
-	backgroundPage.chosenUrls.push(urlInput);
-	urlInputForm.reset();
+function handleUrlEnter() {
+	if (event.keyCode == 13) {
+		handleUrlInput();
+	}
 }
 
+function handleUrlInput() {
+	if (!isUrl(urlInput.value)) {
+		return false;
+	}
+	backgroundPage.chosenUrls.push(urlInput.value);
+	urlInput.value = "";
+	updateUrlList();
+}
+
+function isUrl(url) {
+	if (!url) {
+		return false;
+	}
+	return true;
+}
+
+
 function handleTimeInput() {
-	var timeInput = document.getElementById("timeInput").value;
-	var timeInputForm = document.getElementById("timeInputForm");
-	var backgroundPage.waitTime = timeInput;
-	timeInputForm.reset();
+	backgroundPage.waitTime = timeInput.value;
+	timeInput.value = "";
 }
 
 function getTimeLeft(){
@@ -86,4 +118,19 @@ function showTimeElement() {
 	timeElement.style.display = "block";
 
 	interval = setInterval(updateTime, 1000);
+}
+
+function updateUrlList() {
+	var urlList = document.getElementById("urlList");
+	var chosenUrls = backgroundPage.chosenUrls;
+	// clear existing urls
+	while(urlList.firstChild) {
+		urlList.removeChild(urlList.firstChild);
+	}
+	//refresh them
+	for (var i = 0; i < chosenUrls.length; i++) {
+		var node = document.createElement("LI");
+		node.innerHTML = chosenUrls[i];
+		urlList.appendChild(node);
+	}
 }
